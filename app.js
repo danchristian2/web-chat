@@ -8,7 +8,7 @@ app.use(express.json());//a middleware that accepts json data
 const http = require("http"); //nodejs module to create an http serevr
 const WebSocket = require("ws"); //imports websocket libary
 const server = http.createServer(app); //connecting our express app to the http server
-const wss = new WebSocket.Server({ server }); //creating a new websockets connection
+const wss = new WebSocket.Server({ server,path:"/ws" }); //creating a new websockets connection
 mongoose//mongoose connection
   .connect(process.env.MONGODB_URI)//connecting to mongodb
   .then(() => {

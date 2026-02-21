@@ -23,38 +23,41 @@
     <textarea id="output" readonly rows="10" cols="40"></textarea>
 
     <script>
-        const output = document.getElementById('output');
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const ws = new WebSocket("wss://web-chat-production.up.railway.app");
-        ws.onopen = () => {
-            console.log('Connected to server');
-        };
+    const output = document.getElementById('output');
+    const ws = new WebSocket(
+        window.location.hostname === 'localhost'
+            ? 'ws://localhost:3000/ws'
+            : `wss://${window.location.host}/ws`
+    );
 
-        ws.onmessage = (event) => {
-            output.value += event.data + '\n';
-            output.scrollTop = output.scrollHeight; // auto scroll to bottom
-        };
+    ws.onopen = () => {
+        console.log('Connected to server');
+    };
 
-        ws.onerror = (err) => {
-            console.error('WebSocket error:', err);
-        };
+    ws.onmessage = (event) => {
+        output.value += event.data + '\n';
+        output.scrollTop = output.scrollHeight;
+    };
 
-        ws.onclose = () => {
-            console.log('Disconnected from server');
-        };
-        function sendMessage() {
-            const name = document.getElementById('name').value.trim() || 'Anonymous';
-            const message = document.getElementById('message').value.trim();
+    ws.onerror = (err) => {
+        console.error('WebSocket error:', err);
+    };
 
-            if (!message) {
-                alert('Please enter a message');
-                return;
-            }
+    ws.onclose = () => {
+        console.log('Disconnected from server');
+    };
 
-            ws.send(`${name}: ${message}`);
-            document.getElementById('message').value = ''; // clear after send
+    function sendMessage() {
+        const name = document.getElementById('name').value.trim() || 'Anonymous';
+        const message = document.getElementById('message').value.trim();
+        if (!message) {
+            alert('Please enter a message');
+            return;
         }
-    </script>
+        ws.send(`${name}: ${message}`);
+        document.getElementById('message').value = '';
+    }
+</script>
 </body>
 
 </html>
