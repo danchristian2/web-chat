@@ -1,5 +1,5 @@
 const express = require("express");//express
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");//mongodb
 require("dotenv").config();//environment variables module
 const app = express();//making app the instance of express
@@ -45,7 +45,10 @@ app.post("/",async(req, res) => {//setting up the environment to get the data
   }
 });
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public","index.html")));
+app.use(express.static(path.join(__dirname, "public")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 wss.on("connection", (ws) => {
   console.log("New client added to the connection");
   ws.on("message", (message) => {
