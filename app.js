@@ -1,5 +1,5 @@
 const express = require("express");//express
-const PORT = 3000;//port number
+const port = process.env.PORT || 4000;
 const mongoose = require("mongoose");//mongodb
 require("dotenv").config();//environment variables module
 const app = express();//making app the instance of express
@@ -76,6 +76,6 @@ process.on("uncaughtException", (err) => {
 process.on("unhandledRejection:", (err) => {
   console.error("UnhandledRejection", err);//general error handling
 });
-server.listen(PORT, () => {
-  console.log("server is running on http://localhost:3000");//here you use server no app coz the http server is the one which is connecting
+server.listen(port, () => {
+  console.log(`server is running on http://localhost:${port}`);//here you use server no app coz the http server is the one which is connecting
 });
