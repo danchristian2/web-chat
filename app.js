@@ -1,5 +1,5 @@
 const express = require("express");//express
-const port = process.env.PORT || 4000;
+const port = process.env.PORT;
 const mongoose = require("mongoose");//mongodb
 require("dotenv").config();//environment variables module
 const app = express();//making app the instance of express
