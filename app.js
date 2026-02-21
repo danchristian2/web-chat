@@ -46,7 +46,7 @@ app.post("/",async(req, res) => {//setting up the environment to get the data
 });
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-app.get("/:path(*)", (req, res) => {
+app.get("/*path", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 wss.on("connection", (ws) => {
