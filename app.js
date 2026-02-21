@@ -45,7 +45,7 @@ app.post("/",async(req, res) => {//setting up the environment to get the data
   }
 });
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public","index.html")));
 wss.on("connection", (ws) => {
   console.log("New client added to the connection");
   ws.on("message", (message) => {
