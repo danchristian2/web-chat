@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+
+<body>
+    <h1>DANChat</h1>
+
+    <label class="name-label" for="name">Name:</label><br>
+    <input id="name" type="text" placeholder="Enter your name"><br><br>
+
+    <label class="name-label" for="message">Message:</label><br>
+    <textarea placeholder="Enter a message" id="message" rows="3" cols="40"></textarea><br><br>
+
+    <button id="btn" onclick="sendMessage()">Send</button><br><br>
+
+    <label class="name-label" for="output">Chat output:</label><br>
+    <textarea id="output" readonly rows="10" cols="40"></textarea>
+
+    <script>
+        const output = document.getElementById('output');
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const ws = new WebSocket(`${protocol}//${window.location.host}`);
+        ws.onopen = () => {
+            console.log('Connected to server');
+        };
+
+        ws.onmessage = (event) => {
+            output.value += event.data + '\n';
+            output.scrollTop = output.scrollHeight; // auto scroll to bottom
+        };
+
+        ws.onerror = (err) => {
+            console.error('WebSocket error:', err);
+        };
+
+        ws.onclose = () => {
+            console.log('Disconnected from server');
+        };
+        function sendMessage() {
+            const name = document.getElementById('name').value.trim() || 'Anonymous';
+            const message = document.getElementById('message').value.trim();
+
+            if (!message) {
+                alert('Please enter a message');
+                return;
+            }
+
+            ws.send(`${name}: ${message}`);
+            document.getElementById('message').value = ''; // clear after send
+        }
+    </script>
+</body>
+
+</html>
